@@ -14,6 +14,8 @@ import IconButton from "./components/ui/IconButton";
 import SplashScreen from "./screens/SplashScreen";
 import RestaurantsScreen from "./screens/RestaurantsScreen";
 import DishScreen from "./screens/DishScreen";
+import CartContextProvider from "./store/cart-context";
+import CartScreen from "./screens/CartScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,25 +38,28 @@ function AuthenticatedStack() {
   const authCtx = useContext(AuthContext);
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: Colors.primary500 },
-        headerTintColor: "white",
-        contentStyle: { backgroundColor: Colors.primary100 },
-        headerRight: ({ tintColor }) => (
-          <IconButton
-            icon="exit"
-            color={tintColor}
-            size={24}
-            onPress={authCtx.logout}
-          />
-        ),
-      }}
-    >
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      <Stack.Screen name="Restaurants" component={RestaurantsScreen} />
-      <Stack.Screen name="Dishes" component={DishScreen} />
-    </Stack.Navigator>
+    <CartContextProvider>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: Colors.primary500 },
+          headerTintColor: "white",
+          contentStyle: { backgroundColor: Colors.primary100 },
+          headerRight: ({ tintColor }) => (
+            <IconButton
+              icon="exit"
+              color={tintColor}
+              size={24}
+              onPress={authCtx.logout}
+            />
+          ),
+        }}
+      >
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Restaurants" component={RestaurantsScreen} />
+        <Stack.Screen name="Dishes" component={DishScreen} />
+        <Stack.Screen name="Cart" component={CartScreen} />
+      </Stack.Navigator>
+    </CartContextProvider>
   );
 }
 
@@ -72,6 +77,8 @@ function Navigation() {
 function Root() {
   const [isTryingLogin, setIsTryingLogin] = useState(true);
   const authCtx = useContext(AuthContext);
+
+  // AsyncStorage.clear()
 
   useEffect(() => {
     async function fetchToken() {

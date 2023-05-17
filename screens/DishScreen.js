@@ -28,24 +28,6 @@ function DishScreen({ route, navigation }) {
     getDishes();
   }, []);
 
-  function headerButtonPressHandler() {
-    console.log("Pressed");
-  }
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => {
-        return (
-          <IconButton
-            icon="cart"
-            color="white"
-            onPress={headerButtonPressHandler}
-          />
-        );
-      },
-    });
-  }, [navigation, headerButtonPressHandler]);
-
   function renderMealItem(itemData) {
     const item = itemData.item;
     const mealItemProps = {

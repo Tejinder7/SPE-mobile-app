@@ -9,41 +9,67 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 import MealsDetails from "./MealDetails";
+import { useContext, useLayoutEffect, useState } from "react";
+import IconButton from "./ui/IconButton";
+import Button from "./ui/Button";
+import { CartContext } from "../store/cart-context";
 
-function MealItem({
-  id,
-  name,
-  imageUrl,
-  category,
-  price,
-}) {
+function MealItem({ id, name, imageUrl, category, price }) {
   const navigation = useNavigation();
+  const cartCtx = useContext(CartContext);
+  const[isAddedToCart, setIsAddedToCart]= useState(false)
 
-  function selectMealItemHandler() {
-    navigation.navigate("MealDetail", {
-      mealId: id,
-    });
+  const dish = {
+    dishId: id,
+    name: name,
+    price: price,
+  };
+
+  function headerButtonPressHandler() {
+    navigation.navigate("Cart");
   }
+
+  function changeAddedToCartStatus() {
+    if (isAddedToCart) {
+      cartCtx.removeFromCart(dish);
+      setIsAddedToCart((currentValue) => !currentValue)
+    } else {
+      cartCtx.addToCart(dish);
+      setIsAddedToCart((currentValue) => !currentValue)
+    }
+
+    // console.log(cartCtx.dishList);
+  }
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <IconButton
+            icon="cart"
+            color="white"
+            onPress={headerButtonPressHandler}
+          />
+        );
+      },
+    });
+  }, [navigation, headerButtonPressHandler]);
 
   return (
     <View style={styles.mealItem}>
-      <Pressable
-        android_ripple={{ color: "#ccc" }}
-        style={({ pressed }) => (pressed ? styles.buttonPressed : null)}
-        onPress={selectMealItemHandler}
-      >
-        <View style={styles.innerContainer}>
-          <View>
-            <Image source={{ uri: imageUrl }} style={styles.image} />
-            <Text style={styles.title}>{name}</Text>
-            <Text style={styles.price}>₹{price}</Text>
-          </View>
-          <MealsDetails
-            category={category}
-            price={price}
-          />
+      <View style={styles.innerContainer}>
+        <View>
+          <Image source={{ uri: imageUrl }} style={styles.image} />
+          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.price}>₹{price}</Text>
         </View>
-      </Pressable>
+        <MealsDetails category={category} price={price} />
+        <View style={styles.buttons}>
+          <Button onPress={changeAddedToCartStatus}>
+            {isAddedToCart ? "Remove" : "Add to Cart"}
+          </Button>
+        </View>
+      </View>
     </View>
   );
 }
@@ -77,13 +103,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 8,
   },
-  price:{
-    textAlign:"center",
+  price: {
+    textAlign: "center",
     fontSize: 16,
-    color: "#e13260"
-    
+    color: "#e13260",
   },
-  buttonPressed: {
-    opacity: 0.5,
+  buttons: {
+    marginBottom: 12,
+    // justifyContent:"center",
+    alignItems: "center",
+    // width:"50%"
   },
 });
