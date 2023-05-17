@@ -1,8 +1,10 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext, useState } from "react";
 import { Alert } from "react-native";
 
 import AuthContent from "../components/Auth/AuthContent";
 import LoadingOverlay from "../components/ui/LoadingOverlay";
+import LoginController from "../controllers/LoginController";
 import { AuthContext } from "../store/auth-context";
 import { login } from "../util/auth";
 
@@ -14,9 +16,15 @@ function LoginScreen() {
   async function loginHandler({ email, password }) {
     setIsAuthenticating(true);
     try {
-      const token = await login(email, password);
-      authCtx.authenticate(token);
+      const response = await LoginController.loginUser(email, password);
+      
+      console.log("Token is");
+      console.log(response.token);
+      authCtx.authenticate(response.token);
+      console.log("Printing from async storage");
+      console.log(AsyncStorage.getItem("token"));
     } catch (error) {
+      // console.log(error.response.message);
       Alert.alert(
         "Authentication failed!",
         "Could not log you in, please check your credentials or try again later"
