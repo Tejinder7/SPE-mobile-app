@@ -13,6 +13,7 @@ import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import IconButton from "./components/ui/IconButton";
 import SplashScreen from "./screens/SplashScreen";
 import RestaurantsScreen from "./screens/RestaurantsScreen";
+import DishScreen from "./screens/DishScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,7 @@ function AuthenticatedStack() {
     >
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Restaurants" component={RestaurantsScreen} />
+      <Stack.Screen name="Dishes" component={DishScreen} />
     </Stack.Navigator>
   );
 }

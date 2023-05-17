@@ -2,7 +2,7 @@ import Category from '../models/category';
 import Meal from '../models/meal';
 
 export const CATEGORIES = [
-  new Category('c1', 'Italian', '#f5428d'),
+  new Category('253', 'Italian', '#f5428d'),
   new Category('c2', 'Quick & Easy', '#f54242'),
   new Category('c3', 'Hamburgers', '#f5a442'),
   new Category('c4', 'German', '#f5d142'),
@@ -17,7 +17,7 @@ export const CATEGORIES = [
 export const MEALS = [
   new Meal(
     'm1',
-    ['c1', 'c2'],
+    ['253', 'c2'],
     'Spaghetti with Tomato Sauce',
     'affordable',
     'simple',
@@ -48,7 +48,7 @@ export const MEALS = [
 
   new Meal(
     'm2',
-    ['c2'],
+    ['253'],
     'Toast Hawaii',
     'affordable',
     'simple',

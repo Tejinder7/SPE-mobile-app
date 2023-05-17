@@ -22,7 +22,7 @@ function RestaurantsScreen({ navigation }) {
 
   function renderCategoryItem(itemData) {
     function pressHandler() {
-      navigation.navigate("MealsOverview", {
+      navigation.navigate("Dishes", {
         categoryId: itemData.item.authId,
       });
     }
