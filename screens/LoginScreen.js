@@ -18,9 +18,9 @@ function LoginScreen() {
     try {
       const response = await LoginController.loginUser(email, password);
       
-      console.log("Token is");
-      console.log(response.token);
-      authCtx.authenticate(response.token);
+      console.log("Auth Id is");
+      console.log(response.authId);
+      authCtx.authenticate(response.token, response.authId.toString());
       console.log("Printing from async storage");
       console.log(AsyncStorage.getItem("token"));
     } catch (error) {

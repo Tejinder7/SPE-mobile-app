@@ -12,6 +12,7 @@ import { Colors } from "./constants/styles";
 import AuthContextProvider, { AuthContext } from "./store/auth-context";
 import IconButton from "./components/ui/IconButton";
 import SplashScreen from "./screens/SplashScreen";
+import RestaurantsScreen from "./screens/RestaurantsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,7 @@ function AuthenticatedStack() {
       }}
     >
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="Restaurants" component={RestaurantsScreen} />
     </Stack.Navigator>
   );
 }
@@ -72,9 +74,10 @@ function Root() {
   useEffect(() => {
     async function fetchToken() {
       const storedToken = await AsyncStorage.getItem("token");
+      const storedUserId = await AsyncStorage.getItem("userId");
 
       if (storedToken) {
-        authCtx.authenticate(storedToken);
+        authCtx.authenticate(storedToken, storedUserId);
       }
 
       setIsTryingLogin(false);

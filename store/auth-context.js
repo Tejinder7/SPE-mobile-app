@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext({
   token: "",
+  userId: "",
   isAuthenticated: false,
   authenticate: () => {},
   logout: () => {},
@@ -10,19 +11,25 @@ export const AuthContext = createContext({
 
 function AuthContextProvider({ children }) {
   const [authToken, setAuthToken] = useState();
+  const [loggedInUserId, setUserId] = useState();
 
-  function authenticate(token) {
+  function authenticate(token, userId) {
     setAuthToken(token);
+    setUserId(userId)
     AsyncStorage.setItem("token", token);
+    AsyncStorage.setItem("userId", userId);
   }
 
   function logout() {
     setAuthToken(null);
+    setUserId(null);
     AsyncStorage.removeItem("token");
+    AsyncStorage.removeItem("userId");
   }
 
   const value = {
     token: authToken,
+    userId: loggedInUserId,
     isAuthenticated: !!authToken,
     authenticate: authenticate,
     logout: logout,
